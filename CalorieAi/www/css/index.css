@@ -1,0 +1,47 @@
+body {
+    background-image: url('https://source.unsplash.com/1600x900/?food,healthy');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+button {
+    background-color: #3490dc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #2779bd;
+}
+
+input[type="file"] {
+    display: block;
+    margin: 10px auto;
+}
+
+#result {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+}
