@@ -5,25 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Calorie Calculator</title>
 <style>
-  body { background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-  .container { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-  button { background-color: #3490dc; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-  button:hover { background-color: #2779bd; }
+  body {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 100%;
+  }
+
+  button {
+    background-color: #3490dc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #2779bd;
+  }
+
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
 </style>
 </head>
 <body>
 <div class="container">
-<h2>Upload Image to Analyze Calories</h2>
+<h2>Upload Image to Analyze Calories 🍔</h2>
 <input type="file" id="imageUpload" accept="image/*">
 <br><br>
-<button onclick="analyzeImage()">Analyze</button>
-<div id="result" style="margin-top: 20px;"></div>
+<button id="analyzeBtn" onclick="analyzeImage()">Analyze</button>
+<div id="result"></div>
 </div>
+
 <script>
   function analyzeImage() {
     const fileInput = document.getElementById('imageUpload');
+    const resultDiv = document.getElementById('result');
+    const analyzeBtn = document.getElementById('analyzeBtn');
     const file = fileInput.files[0];
-    if (!file) return alert('Please select an image');
+
+    if (!file) {
+      resultDiv.innerHTML = "<span style='color:red;'>❌ Please select an image!</span>";
+      return;
+    }
+
+    resultDiv.innerHTML = "🔄 Analyzing... Please wait.";
+    analyzeBtn.disabled = true; // Disable button during request
 
     const formData = new FormData();
     formData.append('image', file);
@@ -34,9 +78,16 @@
     })
     .then(response => response.json())
     .then(data => {
-      document.getElementById('result').innerText = `Calories: ${data.result}`;
+      resultDiv.innerHTML = `<strong>✅ Calories:</strong> ${data.result}`;
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+      console.error('Error:', error);
+      resultDiv.innerHTML = "<span style='color:red;'>❌ Error analyzing image. Please try again.</span>";
+    })
+    .finally(() => {
+      analyzeBtn.disabled = false; // Re-enable button
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    });
   }
 </script>
 </body>
