@@ -4,19 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Calorie Calculator</title>
-<link rel="stylesheet" href="css/styles.css">
+<style>
+  body {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 100%;
+  }
+
+  button {
+    background-color: #3490dc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin: 5px;
+  }
+
+  button:hover {
+    background-color: #2779bd;
+  }
+
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
+</style>
 </head>
 <body>
-
 <div class="container">
-  <h2>Upload Image to Analyze Calories</h2>
+  <h2>Upload Image to Analyze Calories 🍔</h2>
+  
+  <!-- File Upload Input -->
   <input type="file" id="imageUpload" accept="image/*">
-  <br><br>
-  <button onclick="analyzeImage()" id="analyzeBtn">Analyze</button>
+
+  <!-- Analyze Button -->
+  <button id="analyzeBtn">Analyze</button>
+  
   <div id="result"></div>
 </div>
 
-<script src="js/index.js"></script> <!-- Use consistent filename (index.js) -->
+<script src="index.js"></script>
 
 </body>
 </html>

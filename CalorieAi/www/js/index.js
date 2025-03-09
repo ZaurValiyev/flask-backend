@@ -1,33 +1,38 @@
-function analyzeImage() {
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("App loaded!");
+
     const fileInput = document.getElementById('imageUpload');
-    const resultDiv = document.getElementById('result');
     const analyzeBtn = document.getElementById('analyzeBtn');
-    const file = fileInput.files[0];
+    const resultDiv = document.getElementById('result');
 
-    if (!file) {
-        resultDiv.innerHTML = "<span style='color:red;'>Please select an image!</span>";
-        return;
-    }
+    analyzeBtn.addEventListener('click', function () {
+        const file = fileInput.files[0];
 
-    resultDiv.innerHTML = "Analyzing... 🔄";
-    analyzeBtn.disabled = true; // Disable button while processing
+        if (!file) {
+            resultDiv.innerHTML = "<span style='color:red;'>❌ Please select an image to upload!</span>";
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append('image', file);
+        resultDiv.innerHTML = "🔄 Uploading... Please wait.";
+        analyzeBtn.disabled = true;
 
-    fetch('https://flask-backend-3jls.onrender.com/analyze', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        resultDiv.innerHTML = `<strong>Calories:</strong> ${data.result}`;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        resultDiv.innerHTML = "<span style='color:red;'>Error analyzing image. Please try again.</span>";
-    })
-    .finally(() => {
-        analyzeBtn.disabled = false; // Enable button again
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('https://flask-backend-3jls.onrender.com/analyze', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            resultDiv.innerHTML = `<strong>✅ Calories:</strong> ${data.result}`;
+        })
+        .catch(error => {
+            console.error("Upload error:", error);
+            resultDiv.innerHTML = "<span style='color:red;'>❌ Error uploading image. Try again.</span>";
+        })
+        .finally(() => {
+            analyzeBtn.disabled = false;
+        });
     });
-}
+});
