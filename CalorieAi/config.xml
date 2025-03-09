@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.example.CalorieAi" version="1.0.0" 
-    xmlns="http://www.w3.org/ns/widgets" 
-    xmlns:android="http://schemas.android.com/apk/res/android" 
+<widget id="com.example.CalorieAi" version="1.0.0"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
     <name>CalorieAi</name>
@@ -12,17 +12,11 @@
 
     <content src="index.html" />
 
-    <!-- Allow external URLs -->
-    <allow-navigation href="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-
-    <!-- Android Specific Config (NO CAMERA PERMISSIONS) -->
+    <!-- Android Specific Config -->
     <platform name="android">
-        <allow-intent href="content:///*" />
-        <allow-intent href="file:///*" />
-
         <config-file target="AndroidManifest.xml" parent="/*">
+            <!-- Internet permission for API requests -->
+            <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
