@@ -26,7 +26,7 @@ def analyze_image(base64_image):
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Can you tell me as precise as possible calorie count of the image?"},
+                        {"type": "text", "text": "List all visible ingredients in the food with their estimated weight in grams and total weight. Format: 'ingredient - weight'. Example: 'strawberry - 20g'"},
                         {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}},
                     ],
                 }
@@ -35,15 +35,7 @@ def analyze_image(base64_image):
         )
 
         response_text = chat_completion.choices[0].message.content
-        if isinstance(response_text, str):
-            return response_text
-
-        formatted_response = "\n".join(
-            [f"* {item.capitalize()}: {cal} calories" for item, cal in response_text.items() if item != "total"]
-        )
-
-        return f"{formatted_response}\n\nTotal estimated calorie count: {response_text.get('total', 'N/A')} calories."
-
+        return response_text.strip()
     except Exception as e:
         return f"Error analyzing image: {str(e)}"
 

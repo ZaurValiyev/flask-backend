@@ -33,6 +33,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
+    margin: 5px;
   }
 
   button:hover {
@@ -43,52 +44,69 @@
     margin-top: 20px;
     font-weight: bold;
   }
+
+  input[type="file"] {
+    display: none; /* Hide default file input */
+  }
 </style>
 </head>
 <body>
 <div class="container">
-<h2>Upload Image to Analyze Calories 🍔</h2>
-<input type="file" id="imageUpload" accept="image/*">
-<br><br>
-<button id="analyzeBtn" onclick="analyzeImage()">Analyze</button>
-<div id="result"></div>
+  <h2>Upload or Capture Image to Analyze Calories 🍔</h2>
+
+  <!-- Hidden File Input -->
+  <input type="file" id="imageUpload" accept="image/*">
+
+  <!-- Camera & Upload Buttons -->
+  <button id="cameraBtn">📷 Take Photo</button>
+  <button id="analyzeBtn" onclick="analyzeImage()">Analyze</button>
+
+  <div id="result"></div>
 </div>
 
 <script>
+  // Camera button triggers file input (mobile-friendly)
+  document.getElementById('cameraBtn').addEventListener('click', function() {
+      const fileInput = document.getElementById('imageUpload');
+      fileInput.setAttribute('capture', 'environment'); // Use rear camera when possible
+      fileInput.click();
+  });
+
   function analyzeImage() {
-    const fileInput = document.getElementById('imageUpload');
-    const resultDiv = document.getElementById('result');
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    const file = fileInput.files[0];
+      const fileInput = document.getElementById('imageUpload');
+      const resultDiv = document.getElementById('result');
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const file = fileInput.files[0];
 
-    if (!file) {
-      resultDiv.innerHTML = "<span style='color:red;'>❌ Please select an image!</span>";
-      return;
-    }
+      if (!file) {
+          resultDiv.innerHTML = "<span style='color:red;'>❌ Please select or capture an image!</span>";
+          return;
+      }
 
-    resultDiv.innerHTML = "🔄 Analyzing... Please wait.";
-    analyzeBtn.disabled = true; // Disable button during request
+      resultDiv.innerHTML = "🔄 Analyzing... Please wait.";
+      analyzeBtn.disabled = true; // Disable button during request
 
-    const formData = new FormData();
-    formData.append('image', file);
+      const formData = new FormData();
+      formData.append('image', file);
 
-    fetch('/analyze', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      resultDiv.innerHTML = `<strong>✅ Calories:</strong> ${data.result}`;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      resultDiv.innerHTML = "<span style='color:red;'>❌ Error analyzing image. Please try again.</span>";
-    })
-    .finally(() => {
-      analyzeBtn.disabled = false; // Re-enable button
-      resultDiv.scrollIntoView({ behavior: 'smooth' });
-    });
+      fetch('/analyze', {  // Flask API endpoint
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          resultDiv.innerHTML = `<strong>✅ Calories:</strong> ${data.result}`;
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          resultDiv.innerHTML = "<span style='color:red;'>❌ Error analyzing image. Please try again.</span>";
+      })
+      .finally(() => {
+          analyzeBtn.disabled = false; // Re-enable button
+          resultDiv.scrollIntoView({ behavior: 'smooth' });
+      });
   }
 </script>
+
 </body>
 </html>
