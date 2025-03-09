@@ -1,37 +1,106 @@
-document.getElementById('analyzeBtn').addEventListener('click', function () {
-  const fileInput = document.getElementById('imageUpload');
-  const resultDiv = document.getElementById('result');
-  const analyzeBtn = document.getElementById('analyzeBtn');
-  const file = fileInput.files[0];
-
-  if (!file) {
-      resultDiv.innerHTML = "<span style='color:red;'>❌ Please select an image to upload!</span>";
-      return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Calorie Calculator</title>
+<style>
+  body {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 100%;
   }
 
-  resultDiv.innerHTML = "🔄 Uploading... Please wait.";
-  analyzeBtn.disabled = true;
+  button {
+    background-color: #3490dc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin: 5px;
+  }
 
-  const formData = new FormData();
-  formData.append('image', file);
+  button:hover {
+    background-color: #2779bd;
+  }
 
-  // 🔄 Updated URL to your Flask backend
-  fetch('https://flask-backend-3jls.onrender.com/analyze', {
-      method: 'POST',
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Upload Image to Analyze Calories 🍔</h2>
+  
+  <!-- File Upload Input -->
+  <input type="file" id="imageUpload" accept="image/*">
+
+  <!-- Analyze Button -->
+  <button id="analyzeBtn">Analyze</button>
+  
+  <div id="result"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("analyzeBtn").addEventListener("click", function () {
+    const fileInput = document.getElementById("imageUpload");
+    const resultDiv = document.getElementById("result");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    const file = fileInput.files[0];
+
+    if (!file) {
+      resultDiv.innerHTML = "<span style='color:red;'>❌ Please select an image to upload!</span>";
+      return;
+    }
+
+    resultDiv.innerHTML = "🔄 Uploading... Please wait.";
+    analyzeBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    fetch("https://flask-backend-3jls.onrender.com/analyze", {
+      method: "POST",
       body: formData,
       headers: {
-          'Accept': 'application/json'
-      }
-  })
-  .then(response => response.json())
-  .then(data => {
-      resultDiv.innerHTML = `<strong>✅ Calories:</strong> ${data.result}`;
-  })
-  .catch(error => {
-      console.error('Upload error:', error);
-      resultDiv.innerHTML = "<span style='color:red;'>❌ Error analyzing image. Try again.</span>";
-  })
-  .finally(() => {
-      analyzeBtn.disabled = false;
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        resultDiv.innerHTML = `<strong>✅ Calories:</strong> ${data.result}`;
+      })
+      .catch((error) => {
+        console.error("Upload error:", error);
+        resultDiv.innerHTML = "<span style='color:red;'>❌ Error analyzing image. Try again.</span>";
+      })
+      .finally(() => {
+        analyzeBtn.disabled = false;
+      });
   });
 });
+</script>
+
+</body>
+</html>
